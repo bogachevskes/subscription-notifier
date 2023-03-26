@@ -21,7 +21,7 @@ class ConfirmEmailController
             throw new \DomainException('token expired');
         }
         
-        $this->db->update('emails', ['confirmed' => 1], ['token' => $token]);
+        $this->db->update('users_emails', ['confirmed' => 1], ['token' => $token]);
 
         $response->getBody()
             ->write(json_encode(['message' => 'Email confirmed']));
