@@ -1,0 +1,9 @@
+.idea
+.vscode
+
+.env
+
+api/vendor
+
+watcher/node_modules
+watcher/dist

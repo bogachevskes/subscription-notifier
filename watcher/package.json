@@ -1,0 +1,19 @@
+{
+  "name": "karma8-subscription-notifier",
+  "version": "1.0.0",
+  "description": "Сервис для рассылки уведомлений об истекающих подписках",
+  "main": "index.js",
+  "author": "Andrey Bogachevskiy",
+  "license": "MIT",
+  "scripts": {
+    "build": "rm -rf ./dist && mkdir ./dist && ./node_modules/typescript/bin/tsc -p ./tsconfig.json",
+    "start": "node ./dist/app.js",
+    "check_emails": "node ./dist/checkEmails.js"
+  },
+  "dependencies": {
+    "@types/node": "^18.15.9",
+    "dotenv": "^16.0.3",
+    "mariadb": "^3.1.1",
+    "typescript": "^5.0.2"
+  }
+}

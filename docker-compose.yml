@@ -1,0 +1,58 @@
+version: '3.7'
+services:
+
+    php-fpm:
+        image: ${REGISTRY}/karma8-app-php-fpm:${IMAGE_TAG}
+        environment:
+            ENV: ${ENV}
+            MYSQL_HOST: ${MYSQL_HOST}
+            MYSQL_PORT: ${MYSQL_PORT}
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
+            MYSQL_USER: ${MYSQL_USER}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+        volumes:
+            - ./api:/var/www/html
+
+    php-cli:
+        image: ${REGISTRY}/karma8-app-php-cli:${IMAGE_TAG}
+        environment:
+            ENV: ${ENV}
+            MYSQL_HOST: ${MYSQL_HOST}
+            MYSQL_PORT: ${MYSQL_PORT}
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
+            MYSQL_USER: ${MYSQL_USER}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+        volumes:
+            - ./api:/app
+
+    nginx:
+        image: ${REGISTRY}/karma8-nginx:${IMAGE_TAG}
+        ports:
+            - ${APP_WEB_PORT}:80
+        volumes:
+            - ./api:/var/www/html
+
+    nodejs-cli:
+        image: node:19.8.1-alpine3.17
+        working_dir: /app
+        environment:
+            MYSQL_HOST: ${MYSQL_HOST}
+            MYSQL_PORT: ${MYSQL_PORT}
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
+            MYSQL_USER: ${MYSQL_USER}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+        volumes:
+            - ./watcher:/app
+
+    mysql:
+        image: mysql:8.0
+        environment:
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
+            MYSQL_USER: ${MYSQL_USER}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+            MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+#        volumes:
+#            - ${MYSQL_SOURCE_PATH}:/var/lib/mysql
+        ports:
+            - "${MYSQL_PORT}:${MYSQL_PORT}"
+        command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_general_ci']
